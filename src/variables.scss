@@ -1,0 +1,29 @@
+/* Variables and mixins declared here will be available in all other SCSS files */
+
+/* Buttons */
+$primaryButton: #53acff;
+$submitButton: #4ccd0f;
+
+/* Effects */
+
+%rippleEffectOnClick {
+	background-position: center;
+	transition: background 0.8s;
+	&:active {
+		background-size: 100%;
+		transition: background 0s;
+	}
+}
+
+@mixin rippleEffectPrimaryOnClick {
+	@extend %rippleEffectOnClick;
+	&:active {
+		background-color: rgba(#53acff, 0.8);
+	}
+}
+@mixin rippleEffectSubmitOnClick {
+	@extend %rippleEffectOnClick;
+	&:active {
+		background-color: rgba(#4ccd0f, 0.8);
+	}
+}
