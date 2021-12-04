@@ -8,25 +8,49 @@
 
 	const { id, title, price, img } = data;
 
-	import { cart } from '../../stores/cart';
+	import { browser } from '$app/env';
 
+	import { cart } from '../../stores/cart';
+	import { favorites } from '../../stores/favorites';
+
+	import Favorites from '$lib/Favorites/favorites.svelte';
 	import Modal from '$lib/Modal/modal.svelte';
 
 	let showModal = false;
+
+	const checkIsFavorite = (currentId: string) => {
+		if (browser) {
+			return $favorites.some(({ id }) => id === currentId);
+		}
+
+		return false;
+	};
+
+	let isFavorite = checkIsFavorite(id);
+
+	const toggleFavorite = () => {
+		if (!checkIsFavorite(id)) {
+			favorites.update((favData) => [...favData, data]);
+			isFavorite = true;
+		} else {
+			favorites.update((favData) => {
+				return favData.filter((fav) => fav !== data);
+			});
+
+			isFavorite = false;
+		}
+	};
 
 	const handleForm = () => {
 		showModal = false;
 		alert('Успішно! Замовлення в опрацюванні');
 	};
-	console.log($cart);
 </script>
 
 <article class="card">
-	<button type="button" class="card-like">
-		<img src="/heart.svg" alt="додати до вибраного" />
-	</button>
+	<Favorites {isFavorite} {toggleFavorite} />
 	<a href="#" class="card-link">
-		<img class="card-img" src={img} alt={data.title} />
+		<img class="card-img" src={img} alt={title} {title} />
 	</a>
 	<div class="card-info">
 		<h2 class="card-title">{title}</h2>
@@ -110,20 +134,6 @@
 		min-width: 160px;
 		width: 100%;
 		border-radius: 6px;
-		.card-like {
-			cursor: pointer;
-			position: absolute;
-			top: 7px;
-			right: 7px;
-			border: none;
-			background: none;
-			border-radius: 50%;
-			padding: 3px;
-			@include rippleEffectPrimaryOnClick;
-			img {
-				display: block;
-			}
-		}
 
 		.card-link {
 			color: #101010;
