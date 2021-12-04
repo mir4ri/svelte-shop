@@ -1,5 +1,16 @@
-<script>
-	import Modal from '../Modal/modal.svelte';
+<script lang="ts">
+	export let data = {
+		id: '1',
+		title: 'Ігрова консоль Microsoft Xbox Series S 512 GB All-Digital Console',
+		price: 13999,
+		img: '/xbox.jpg'
+	};
+
+	const { id, title, price, img } = data;
+
+	import { cart } from '../../stores/cart';
+
+	import Modal from '$lib/Modal/modal.svelte';
 
 	let showModal = false;
 
@@ -7,23 +18,29 @@
 		showModal = false;
 		alert('Успішно! Замовлення в опрацюванні');
 	};
+	console.log($cart);
 </script>
 
 <article class="card">
-	<button type="button" class="card-like"><img src="/heart.svg" alt="додати до вибраного" /></button
-	>
+	<button type="button" class="card-like">
+		<img src="/heart.svg" alt="додати до вибраного" />
+	</button>
 	<a href="#" class="card-link">
-		<img
-			class="card-img"
-			src="/xbox.jpg"
-			alt="Ігрова консоль Microsoft Xbox Series S 512 GB All-Digital Console"
-		/>
+		<img class="card-img" src={img} alt={data.title} />
 	</a>
 	<div class="card-info">
-		<h2 class="card-title">Ігрова консоль Microsoft Xbox Series S 512 GB All-Digital Console</h2>
+		<h2 class="card-title">{title}</h2>
 		<div>
-			<span><span class="card-price">13999 ₴</span></span>
-			<button type="button" class="card-toCart">В кошик</button>
+			<span><span class="card-price">{price}₴</span></span>
+			<button
+				type="button"
+				class="card-toCart"
+				on:click={() => {
+					cart.update((cartData) => [...cartData, data]);
+				}}
+			>
+				<img src="/addToCart.svg" alt="додати у кошик" />
+			</button>
 		</div>
 	</div>
 
@@ -36,8 +53,24 @@
 	<Modal on:close={() => (showModal = false)}>
 		<form class="order-form" on:submit|preventDefault={handleForm}>
 			<span>
-				<input type="text" placeholder="Ім'я" required />
-				<input type="text" placeholder="Прізвище" required />
+				<input
+					type="text"
+					placeholder="Ім'я"
+					pattern="[А-ЩЬЮЯҐЄІЇа-щьюяґєії_-]+"
+					maxlength="32"
+					minlength="1"
+					required
+					title="Ім'я повинно складатися тільки з киририлиці, без пробілів"
+				/>
+				<input
+					type="text"
+					placeholder="Прізвище"
+					pattern="[А-ЩЬЮЯҐЄІЇа-щьюяґєії_-]+"
+					maxlength="32"
+					minlength="1"
+					required
+					title="Прізвише повинно складатися тільки з киририлиці, без пробілів"
+				/>
 			</span>
 			<span>
 				<input type="email" placeholder="Ел. пошта" required minlength="7" />
@@ -93,15 +126,19 @@
 		}
 
 		.card-link {
-			display: block;
 			color: #101010;
 			text-decoration: none;
+			height: 180px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			.card-img {
-				display: block;
-				margin: 0 auto;
-				object-fit: cover;
+				display: inline-block;
+				object-fit: contain;
 				padding: 18px 9px;
-				width: calc(100% - 18px);
+				box-sizing: border-box;
+				width: 100%;
+				max-height: 100%;
 			}
 		}
 
@@ -114,7 +151,7 @@
 			padding: 0 9px 12px;
 			.card-title {
 				font-size: 0.875em;
-				margin-bottom: 16px;
+				margin-bottom: 10px;
 				height: 38px;
 				overflow: hidden;
 			}
@@ -127,7 +164,6 @@
 				padding: 2px 0;
 				span {
 					.card-price {
-						z-index: 2;
 						font-weight: 500;
 					}
 				}
@@ -138,8 +174,21 @@
 					color: #fff;
 					border: none;
 					border-radius: 6px;
-					padding: 4px 8px;
+					padding: 6px;
 					font-weight: 500;
+					display: flex;
+					align-items: center;
+					@media screen and (min-width: 992px) {
+						&::before {
+							content: 'В кошик';
+							display: block;
+							margin-right: 5px;
+							font-weight: 500;
+						}
+					}
+					img {
+						display: inline-block;
+					}
 				}
 			}
 		}

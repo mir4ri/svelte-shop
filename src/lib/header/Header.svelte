@@ -1,12 +1,21 @@
+<script>
+	import { cart } from '../../stores/cart';
+</script>
+
 <header class="header">
 	<div class="container">
 		<a class="logo" href="/"><img src="/logo.svg" alt="логотип" /></a>
-		<nav />
-		<button class="menu" type="button">
-			<span />
-			<span />
-			<span />
-		</button>
+
+		<span>
+			<button class="cart" type="button" data-length={$cart.length}>
+				<img class="cart-icon" src="/cart.svg" alt="корзина" />
+			</button>
+			<button class="menu" type="button">
+				<span />
+				<span />
+				<span />
+			</button>
+		</span>
 	</div>
 </header>
 
@@ -26,19 +35,52 @@
 				}
 			}
 
-			.menu {
-				background: none;
-				border: none;
-				padding: 0 5px;
-				span {
-					display: block;
-					width: 20px;
-					height: 3px;
-					margin-bottom: 3px;
-					background: #101010;
-					border-radius: 1px;
+			span {
+				display: flex;
+				align-items: center;
+				button:not(:last-child) {
+					margin-right: 10px;
+				}
+				.cart {
+					position: relative;
+					background: none;
+					border: none;
+
+					&::before {
+						content: attr(data-length);
+						position: absolute;
+						top: -5px;
+						right: -6px;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 20px;
+						height: 20px;
+						border-radius: 50%;
+						color: #fff;
+						background: $primaryButton;
+						font-size: 12px;
+						font-weight: 600;
+					}
+					.cart-icon {
+						display: block;
+					}
+				}
+				.menu {
+					background: none;
+					border: none;
+					padding: 0 5px;
+					span {
+						display: block;
+						width: 20px;
+						height: 3px;
+						margin-bottom: 3px;
+						background: #101010;
+						border-radius: 1px;
+					}
 				}
 			}
+
 			@media screen and (min-width: 992px) {
 				max-width: 1440px;
 				margin: 0 auto;

@@ -1,4 +1,5 @@
 import preprocess from 'svelte-preprocess';
+import typescript from '@rollup/plugin-typescript';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -13,6 +14,8 @@ const config = {
 			}
 		})
 	],
+
+	plugins: [typescript()],
 
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html

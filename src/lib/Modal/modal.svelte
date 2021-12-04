@@ -72,6 +72,7 @@
 		border-radius: 0.2em;
 		background: white;
 		.modal-close {
+			cursor: pointer;
 			display: block;
 			margin-left: auto;
 			width: 20px;
