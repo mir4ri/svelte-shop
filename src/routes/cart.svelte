@@ -2,6 +2,18 @@
 	import { cart } from '../stores/cart';
 
 	import CartItem from '$lib/CartItem/cartItem.svelte';
+	import SubmitFormButton from '$lib/SubmitFormButton/submitFormButton.svelte';
+
+	// const uniqueCart = new Set($cart);
+	const uniqueCart = [...new Map($cart.map((item) => [item['id'], item])).values()];
+
+	let totalPrice = 0;
+	const sum = $cart.reduce(
+		(accumulator, currentValue) => accumulator + currentValue.price,
+		totalPrice
+	);
+
+	console.log([...uniqueCart]);
 </script>
 
 <svelte:head>
@@ -9,22 +21,45 @@
 </svelte:head>
 
 <main class="content">
-	<h1>Кошик</h1>
-
+	<h1 class="cart-title">Кошик</h1>
+	<span class="cart-header">
+		В корзині
+		<strong>{$cart.length} </strong>
+		товари(-ів) на суму <strong>{sum}₴</strong>
+	</span>
 	{#if $cart.length}
 		<section class="cart-wrapper">
-			{#each $cart as { id, title, img, price }, index}
-				<CartItem {id} {title} {img} {index} {price} />
+			{#each uniqueCart as { id, title, img, price }, index}
+				<CartItem
+					{id}
+					{title}
+					{img}
+					{index}
+					{price}
+					totalItems={$cart.filter((cartItem) => cartItem.id === id).length}
+				/>
 			{/each}
 		</section>
-		<button class="order-submit" type="submit">Підтвердити замовлення</button>
+		<SubmitFormButton>Підтвердити замовлення</SubmitFormButton>
+		<button class="cart-clear" type="submit" on:click={() => cart.update(() => [])}>
+			Очистити корзину
+		</button>
 	{:else}
 		<div class="cart-empty">Корзина порожня</div>
 	{/if}
 </main>
 
 <style lang="scss">
+	.cart-title {
+		margin-bottom: 4px;
+	}
+	.cart-header {
+		display: block;
+		margin-bottom: 12px;
+	}
+
 	.cart-wrapper {
+		margin-bottom: 8px;
 		@media screen and (min-width: 992px) {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);
@@ -40,18 +75,16 @@
 		line-height: 200px;
 	}
 
-	.order-submit {
+	.cart-clear {
 		cursor: pointer;
 		display: block;
-		max-width: 500px;
+		background: #cf000f;
 		color: #fff;
-		background: $submitButton;
 		border: none;
+		padding: 5px 8px;
 		font-weight: 500;
-		padding: 6px 8px;
 		border-radius: 2px;
-		font-size: 1em;
-		margin: 0 auto;
+		margin: 10px auto 0;
 		@include rippleEffectSubmitOnClick;
 	}
 </style>

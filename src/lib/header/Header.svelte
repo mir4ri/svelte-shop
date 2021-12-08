@@ -11,7 +11,7 @@
 			<button class="cart" type="button" data-length={$cart.length} on:click={() => goto('/cart')}>
 				<img class="cart-icon" src="/cart.svg" alt="корзина" />
 			</button>
-			<button class="menu" type="button">
+			<button class="menu" type="menu">
 				<span />
 				<span />
 				<span />

@@ -16,28 +16,43 @@
 	import Favorites from '$lib/Favorites/favorites.svelte';
 	import Modal from '$lib/Modal/modal.svelte';
 
-	let showModal = false;
+	let showModal: boolean = false;
 
-	const checkIsFavorite = (currentId: string) => {
+	const checkIsExistItem = (array: any, currentId: string) => {
 		if (browser) {
-			return $favorites.some(({ id }) => id === currentId);
+			return array.some(({ id }) => id === currentId);
 		}
 
 		return false;
 	};
 
-	let isFavorite = checkIsFavorite(id);
+	let isFavorite = checkIsExistItem($favorites, id);
+
+	const addItem = (store) => {
+		store.update((itemsData) => [...itemsData, data]);
+	};
+
+	const removeItem = (store) => {
+		store.update((itemsData) => {
+			return itemsData.filter((item) => item.id !== data.id);
+		});
+	};
 
 	const toggleFavorite = () => {
-		if (!checkIsFavorite(id)) {
-			favorites.update((favData) => [...favData, data]);
-			isFavorite = true;
-		} else {
-			favorites.update((favData) => {
-				return favData.filter((fav) => fav.id !== data.id);
-			});
-
+		if (checkIsExistItem($favorites, id)) {
+			removeItem(favorites);
 			isFavorite = false;
+		} else {
+			addItem(favorites);
+			isFavorite = true;
+		}
+	};
+
+	const toggleCart = () => {
+		if (checkIsExistItem($cart, id)) {
+			removeItem(cart);
+		} else {
+			addItem(cart);
 		}
 	};
 
@@ -56,14 +71,18 @@
 		<h2 class="card-title">{title}</h2>
 		<div>
 			<span><span class="card-price">{price}₴</span></span>
+
 			<button
 				type="button"
 				class="card-toCart"
-				on:click={() => {
-					cart.update((cartData) => [...cartData, data]);
-				}}
+				data-inCart={checkIsExistItem($cart, id) ? 'З кошику' : 'В кошик'}
+				on:click={() => toggleCart()}
 			>
-				<img src="/addToCart.svg" alt="додати у кошик" />
+				{#if checkIsExistItem($cart, id)}
+					<img src="/inCart.svg" alt="забрати з кошика" />
+				{:else}
+					<img src="/addToCart.svg" alt="додати у кошик" />
+				{/if}
 			</button>
 		</div>
 	</div>
@@ -190,7 +209,7 @@
 					align-items: center;
 					@media screen and (min-width: 992px) {
 						&::before {
-							content: 'В кошик';
+							content: attr(data-inCart);
 							display: block;
 							margin-right: 5px;
 							font-weight: 500;
