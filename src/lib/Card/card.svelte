@@ -34,7 +34,7 @@
 			isFavorite = true;
 		} else {
 			favorites.update((favData) => {
-				return favData.filter((fav) => fav !== data);
+				return favData.filter((fav) => fav.id !== data.id);
 			});
 
 			isFavorite = false;

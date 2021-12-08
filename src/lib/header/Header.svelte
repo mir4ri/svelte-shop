@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { cart } from '../../stores/cart';
 </script>
 
@@ -7,7 +8,7 @@
 		<a class="logo" href="/"><img src="/logo.svg" alt="логотип" /></a>
 
 		<span>
-			<button class="cart" type="button" data-length={$cart.length}>
+			<button class="cart" type="button" data-length={$cart.length} on:click={() => goto('/cart')}>
 				<img class="cart-icon" src="/cart.svg" alt="корзина" />
 			</button>
 			<button class="menu" type="button">
@@ -23,7 +24,11 @@
 	.header {
 		border-bottom: 1px solid #dedede;
 
-		background: #f0f8ff;
+		// background: #f0f8ff;
+		background: #e3f2ff;
+		position: sticky;
+		top: 0;
+		z-index: 3;
 		.container {
 			display: flex;
 			justify-content: space-between;
@@ -45,6 +50,7 @@
 					position: relative;
 					background: none;
 					border: none;
+					cursor: pointer;
 
 					&::before {
 						content: attr(data-length);

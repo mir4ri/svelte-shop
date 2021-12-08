@@ -37,8 +37,7 @@
 		<Card
 			data={{
 				id: '4',
-				title:
-					'Ігрова консоль PlayStation 4 1Тб Black + 3 гри + PlayStation Plus: Підписка на 3 місяці',
+				title: 'Ігрова консоль PlayStation 4 1Тб Black + 3 гри + PlayStation Plus (3 міс.)',
 				price: 10999,
 				img: '/playstation4.jpeg'
 			}}
