@@ -4,16 +4,17 @@
 	import CartItem from '$lib/CartItem/cartItem.svelte';
 	import SubmitFormButton from '$lib/SubmitFormButton/submitFormButton.svelte';
 
-	// const uniqueCart = new Set($cart);
-	const uniqueCart = [...new Map($cart.map((item) => [item['id'], item])).values()];
-
+	let uniqueCart;
 	let totalPrice = 0;
-	const sum = $cart.reduce(
+	let sum = 0;
+
+	if ($cart) {
+		uniqueCart = [...new Map($cart.map((item) => [item['id'], item])).values()];
+	}
+	$: sum = $cart.reduce(
 		(accumulator, currentValue) => accumulator + currentValue.price,
 		totalPrice
 	);
-
-	console.log([...uniqueCart]);
 </script>
 
 <svelte:head>

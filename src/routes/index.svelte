@@ -93,9 +93,10 @@
 		<Card
 			data={{
 				id: '8',
-				title: 'Ігрова консоль Microsoft Xbox Series S 512 GB All-Digital Console',
-				price: 20999,
-				img: '/playstation5.webp'
+				title:
+					'Ігрова приставка PS5 PlayStation 5 Digital Edition (PS5DE/DS/DSCH/PSP12) + Бездротовий геймпад PlayStation5 Dualsense + Зарядна станція PlayStation5 Dualsense + Підписка PlayStation Plus на 12 місяців',
+				price: 17999,
+				img: '/ps5dual.jpeg'
 			}}
 		/>
 	</div>
