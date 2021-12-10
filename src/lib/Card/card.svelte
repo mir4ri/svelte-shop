@@ -29,12 +29,12 @@
 	let isFavorite = checkIsExistItem($favorites, id);
 
 	const addItem = (store) => {
-		store.update((itemsData) => [...itemsData, data]);
+		store.update((itemsData) => [...itemsData, { ...data, quantity: 1 }]);
 	};
 
 	const removeItem = (store) => {
 		store.update((itemsData) => {
-			return itemsData.filter((item) => item.id !== data.id);
+			return itemsData.filter(({ id }) => id !== data.id);
 		});
 	};
 
@@ -203,7 +203,7 @@
 					color: #fff;
 					border: none;
 					border-radius: 6px;
-					padding: 6px;
+					padding: 4px 6px;
 					font-weight: 500;
 					display: flex;
 					align-items: center;

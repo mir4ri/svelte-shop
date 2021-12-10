@@ -4,16 +4,19 @@
 	import CartItem from '$lib/CartItem/cartItem.svelte';
 	import SubmitFormButton from '$lib/SubmitFormButton/submitFormButton.svelte';
 
-	let uniqueCart;
 	let totalPrice = 0;
-	let sum = 0;
+	let cartSumPrice = 0;
+	let cartQuantity = 0;
 
-	if ($cart) {
-		uniqueCart = [...new Map($cart.map((item) => [item['id'], item])).values()];
-	}
-	$: sum = $cart.reduce(
-		(accumulator, currentValue) => accumulator + currentValue.price,
+	$: uniqueCart = [...new Map($cart.map((item) => [item['id'], item])).values()];
+	$: cartSumPrice = uniqueCart.reduce(
+		(accumulator, { price, quantity }) => accumulator + quantity * price,
 		totalPrice
+	);
+
+	$: cartLength = $cart.reduce(
+		(accumulator, currentValue) => accumulator + currentValue.quantity,
+		cartQuantity
 	);
 </script>
 
@@ -25,20 +28,13 @@
 	<h1 class="cart-title">Кошик</h1>
 	<span class="cart-header">
 		В корзині
-		<strong>{$cart.length} </strong>
-		товари(-ів) на суму <strong>{sum}₴</strong>
+		<strong>{cartLength} </strong>
+		товари(-ів) на суму <strong>{cartSumPrice}₴</strong>
 	</span>
 	{#if $cart.length}
 		<section class="cart-wrapper">
-			{#each uniqueCart as { id, title, img, price }, index}
-				<CartItem
-					{id}
-					{title}
-					{img}
-					{index}
-					{price}
-					totalItems={$cart.filter((cartItem) => cartItem.id === id).length}
-				/>
+			{#each uniqueCart as { id, title, img, price, quantity }}
+				<CartItem {id} {title} {img} {price} {quantity} />
 			{/each}
 		</section>
 		<SubmitFormButton>Підтвердити замовлення</SubmitFormButton>
@@ -63,7 +59,7 @@
 		margin-bottom: 8px;
 		@media screen and (min-width: 992px) {
 			display: grid;
-			grid-template-columns: repeat(2, 1fr);
+			grid-template-columns: repeat(3, 1fr);
 			column-gap: 10px;
 		}
 	}
@@ -79,7 +75,7 @@
 	.cart-clear {
 		cursor: pointer;
 		display: block;
-		background: #cf000f;
+		background: $clearButton;
 		color: #fff;
 		border: none;
 		padding: 5px 8px;

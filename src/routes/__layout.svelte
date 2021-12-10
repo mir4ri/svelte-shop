@@ -12,7 +12,7 @@
 	.main {
 		padding: 16px 5px;
 		@media screen and (min-width: 992px) {
-			max-width: 1320px;
+			max-width: 1440px;
 			margin: 0 auto;
 		}
 	}
