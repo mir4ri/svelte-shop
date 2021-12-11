@@ -1,23 +1,25 @@
 <script>
+	import { browser } from '$app/env';
+
 	import { cart } from '../stores/cart';
 
 	import CartItem from '$lib/CartItem/cartItem.svelte';
 	import SubmitFormButton from '$lib/SubmitFormButton/submitFormButton.svelte';
 
 	let totalPrice = 0;
-	let cartSumPrice = 0;
 	let cartQuantity = 0;
 
-	$: uniqueCart = [...new Map($cart.map((item) => [item['id'], item])).values()];
-	$: cartSumPrice = uniqueCart.reduce(
-		(accumulator, { price, quantity }) => accumulator + quantity * price,
-		totalPrice
-	);
+	$: uniqueCart = browser ? [...new Map($cart.map((item) => [item['id'], item])).values()] : [];
+	$: cartSumPrice = browser
+		? uniqueCart.reduce(
+				(accumulator, { price, quantity }) => accumulator + quantity * price,
+				totalPrice
+		  )
+		: '';
 
-	$: cartLength = $cart.reduce(
-		(accumulator, currentValue) => accumulator + currentValue.quantity,
-		cartQuantity
-	);
+	$: cartLength = browser
+		? $cart.reduce((accumulator, currentValue) => accumulator + currentValue.quantity, cartQuantity)
+		: '';
 </script>
 
 <svelte:head>

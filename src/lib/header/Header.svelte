@@ -1,6 +1,9 @@
 <script>
+	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
 	import { cart } from '../../stores/cart';
+
+	let cartQuantity = 0;
 </script>
 
 <header class="header">
@@ -8,14 +11,19 @@
 		<a class="logo" href="/"><img src="/logo.svg" alt="логотип" /></a>
 
 		<span>
-			<button class="cart" type="button" data-length={$cart.length} on:click={() => goto('/cart')}>
-				<img class="cart-icon" src="/cart.svg" alt="корзина" />
-			</button>
-			<button class="menu" type="menu">
-				<span />
-				<span />
-				<span />
-			</button>
+			{#if browser}
+				<button
+					class="cart"
+					type="button"
+					data-length={$cart.reduce(
+						(accumulator, currentValue) => accumulator + currentValue.quantity,
+						cartQuantity
+					)}
+					on:click={() => goto('/cart')}
+				>
+					<img class="cart-icon" src="/cart.svg" alt="корзина" />
+				</button>
+			{/if}
 		</span>
 	</div>
 </header>
@@ -23,8 +31,6 @@
 <style lang="scss">
 	.header {
 		border-bottom: 1px solid #dedede;
-
-		// background: #f0f8ff;
 		background: #e3f2ff;
 		position: sticky;
 		top: 0;
@@ -72,19 +78,19 @@
 						display: block;
 					}
 				}
-				.menu {
-					background: none;
-					border: none;
-					padding: 0 5px;
-					span {
-						display: block;
-						width: 20px;
-						height: 3px;
-						margin-bottom: 3px;
-						background: #101010;
-						border-radius: 1px;
-					}
-				}
+				// .menu {
+				// 	background: none;
+				// 	border: none;
+				// 	padding: 0 5px;
+				// 	span {
+				// 		display: block;
+				// 		width: 20px;
+				// 		height: 3px;
+				// 		margin-bottom: 3px;
+				// 		background: #101010;
+				// 		border-radius: 1px;
+				// 	}
+				// }
 			}
 
 			@media screen and (min-width: 992px) {

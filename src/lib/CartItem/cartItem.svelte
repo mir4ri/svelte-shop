@@ -107,6 +107,9 @@
 					display: flex;
 					align-items: center;
 				}
+				.cart-item-price {
+					font-weight: 500;
+				}
 				.cart-item-quantity-button {
 					cursor: pointer;
 					display: inline-block;
@@ -137,7 +140,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			max-width: 200px;
+			width: 100%;
 			color: #fff;
 			font-weight: 500;
 			background: $clearButton;
@@ -148,13 +151,14 @@
 			img {
 				display: block;
 			}
-			// @media screen and (min-width: 992px) {
+			@media screen and (min-width: 992px) {
+				width: 150px;
+			}
 			&::before {
 				content: 'Видалити товар';
 				display: block;
 				margin-right: 5px;
 			}
-			// }
 		}
 	}
 </style>
