@@ -50,11 +50,10 @@
 					on:click={() => changeItemQuantity(quantity + 1)}>+</button
 				>
 			</span>
-
-			<button type="button" class="cart-item-remove" on:click={() => removeItemFromCart()}>
-				<img src="/bin.svg" alt="Видалити товар" />
-			</button>
 		</span>
+		<button type="button" class="cart-item-remove" on:click={() => removeItemFromCart()}>
+			<img src="/bin.svg" alt="Видалити товар" />
+		</button>
 	</div>
 </article>
 
@@ -97,14 +96,13 @@
 				font-size: 1em;
 				height: 40px;
 				overflow: hidden;
-				margin-bottom: 5px;
+				margin-bottom: 16px;
 				width: 100%;
 			}
 			.cart-item-quantity-container {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				margin-bottom: 4px;
 				& > span {
 					display: flex;
 					align-items: center;
@@ -135,24 +133,28 @@
 			}
 		}
 		.cart-item-remove {
+			cursor: pointer;
 			display: flex;
 			align-items: center;
+			justify-content: center;
+			max-width: 200px;
 			color: #fff;
 			font-weight: 500;
 			background: $clearButton;
 			border: none;
 			padding: 4px 6px;
 			border-radius: 6px;
+			margin-bottom: 4px;
 			img {
 				display: block;
 			}
-			@media screen and (min-width: 992px) {
-				&::before {
-					content: 'Видалити';
-					display: block;
-					margin-right: 5px;
-				}
+			// @media screen and (min-width: 992px) {
+			&::before {
+				content: 'Видалити товар';
+				display: block;
+				margin-right: 5px;
 			}
+			// }
 		}
 	}
 </style>
